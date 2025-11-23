@@ -1,11 +1,14 @@
 package mail
 
 import (
-	"crypto/tls"
-	"log"
 	"net/smtp"
 	"os"
-	"strconv"
+
+	//"strconv"
+	"crypto/tls"
+	"log"
+
+	"github.com/jm-menon/Jahnavi-s-Portfolio/internal/mail/template"
 )
 
 //SMTP_HOST= smtp.gmail.com
@@ -21,8 +24,8 @@ func SendContact(from, subject, body string) error {
 	portStr := os.Getenv("SMTP_PORT")
 	host := os.Getenv("SMTP_HOST")
 
-	port, _ := strconv.Atoi(portStr)
-	msg := template.emailFormat(from, subject, body)
+	//port, _ := strconv.Atoi(portStr)
+	msg := template.EmailFormat(from, subject, body)
 
 	auth := smtp.PlainAuth("", user, pass, host)
 	tlsConfig := &tls.Config{ServerName: host}

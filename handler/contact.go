@@ -13,9 +13,9 @@ import (
 
 func Contact(tmpl *template.Template) http.HandlerFunc {
 	type formData struct {
-		email   string `schema: "email"`
-		subject string `schema: "subject"`
-		message string `schema: "message"`
+		Email   string `schema: "email"`
+		Subject string `schema: "subject"`
+		Message string `schema: "message"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
@@ -29,14 +29,17 @@ func Contact(tmpl *template.Template) http.HandlerFunc {
 				http.Error(w, "Bad form", http.StatusBadRequest)
 				return
 			}
-			if err := mail.SendContact(input.email, input.subject, input.message); err != nil {
+			if err := mail.SendContact(input.Email, input.Subject, input.Message); err != nil {
 				tmpl.ExecuteTemplate(w, "contact.html", map[string]string{
 					"Error": "Failed to send. Try again.",
 				})
 				return
 			}
-
+			tmpl.ExecuteTemplate(w, "contact.html", map[string]string{
+				"Success": "Emali sent successfully! I will reply soon!!"})
+			return
 		}
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
 
 }

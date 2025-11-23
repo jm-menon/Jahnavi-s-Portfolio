@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func emailFormat(from, subject, message string) string {
+func EmailFormat(from, subject, message string) string {
 	user := os.Getenv("SMTP_USERNAME")
 	return fmt.Sprintf(`From: %s
 To: %s
