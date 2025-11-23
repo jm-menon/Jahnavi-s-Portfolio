@@ -13,9 +13,9 @@ import (
 
 func Contact(tmpl *template.Template) http.HandlerFunc {
 	type formData struct {
-		Email   string `schema: "email"`
-		Subject string `schema: "subject"`
-		Message string `schema: "message"`
+		Email   string `schema:"email"`
+		Subject string `schema:"subject"`
+		Message string `schema:"message"`
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {

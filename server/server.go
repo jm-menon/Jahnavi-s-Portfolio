@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/schema"
+	"github.com/jm-menon/Jahnavi-s-Portfolio/handler"
 )
 
 var decoder = schema.NewDecoder()
@@ -26,16 +27,29 @@ func NewServer() http.Handler {
 		}
 		tmpl.ExecuteTemplate(w, "index.html", nil)
 	})
+	mux.HandleFunc("/about", handler.HTML("about.html", tmpl))
+	mux.HandleFunc("/blogs", handler.HTML("blogs.html", tmpl))
+	mux.HandleFunc("/projects", handler.HTML("projects.html", tmpl))
+	mux.HandleFunc("/resume", handler.PDF("github.com/jm-menon/Jahnavi-s-Portfolio/assets/Jahnavi_Menon_Software_Engineer.pdf"))
+	mux.HandleFunc("/contact", handler.Contact(tmpl))
 
-	genericHandler := func(w http.ResponseWriter, r *http.Request) {
-		log.Println("Another Page")
-		w.Write([]byte("Another Page"))
-	}
-	mux.HandleFunc("/about", genericHandler)
-	mux.HandleFunc("/projects", genericHandler)
-	mux.HandleFunc("/contact", genericHandler)
-	mux.HandleFunc("/blog", genericHandler)
+	return loggingMiddleware(recoveryMiddleware(mux))
+}
 
-	return mux
-
+func loggingMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s %s", r.Method, r.URL.Path)
+		next.ServeHTTP(w, r)
+	})
+}
+func recoveryMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		defer func() {
+			if err := recover(); err != nil {
+				log.Printf("Panic: %v", err)
+				http.Error(w, "Something went wrong", http.StatusInternalServerError)
+			}
+		}()
+		next.ServeHTTP(w, r)
+	})
 }
