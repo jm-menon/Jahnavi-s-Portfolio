@@ -28,6 +28,7 @@ func Contact(tmpl *template.Template) http.HandlerFunc {
 				http.Error(w, "Bad form", http.StatusBadRequest)
 				return
 			}
+
 		}
 	}
 
