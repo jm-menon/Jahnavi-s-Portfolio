@@ -30,7 +30,7 @@ func NewServer() http.Handler {
 	mux.HandleFunc("/about", handler.HTML("about.html", tmpl))
 	mux.HandleFunc("/blogs", handler.HTML("blogs.html", tmpl))
 	mux.HandleFunc("/projects", handler.HTML("projects.html", tmpl))
-	mux.HandleFunc("/resume", handler.PDF("github.com/jm-menon/Jahnavi-s-Portfolio/assets/Jahnavi_Menon_Software_Engineer.pdf"))
+	mux.HandleFunc("/resume", handler.PDF("github.com/jm-menon/Jahnavi-s-Portfolio/assests/Jahnavi_Menon_Software_Engineer.pdf"))
 	mux.HandleFunc("/contact", handler.Contact(tmpl))
 
 	return loggingMiddleware(recoveryMiddleware(mux))

@@ -11,7 +11,7 @@ func PDF(filePath string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		file, err := os.Open(filePath)
 		if err != nil {
-			log.Println("Some error")
+			log.Println("Some error: ", err)
 			http.NotFound(w, r)
 			return
 		}
