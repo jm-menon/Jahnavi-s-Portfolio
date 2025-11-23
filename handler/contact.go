@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/schema"
+	"github.com/jm-menon/Jahnavi-s-Portfolio/internal/mail"
 )
 
 //basically will handle the functionalities of the form in contacts page
@@ -26,6 +27,12 @@ func Contact(tmpl *template.Template) http.HandlerFunc {
 			var decoder = schema.NewDecoder()
 			if err := decoder.Decode(&input, r.PostForm); err != nil {
 				http.Error(w, "Bad form", http.StatusBadRequest)
+				return
+			}
+			if err := mail.SendContact(input.email, input.subject, input.message); err != nil {
+				tmpl.ExecuteTemplate(w, "contact.html", map[string]string{
+					"Error": "Failed to send. Try again.",
+				})
 				return
 			}
 
