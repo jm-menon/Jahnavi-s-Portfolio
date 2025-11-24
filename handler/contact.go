@@ -20,6 +20,7 @@ func Contact(tmpl *template.Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			tmpl.ExecuteTemplate(w, "contact.html", nil)
+			return
 		}
 		if r.Method == http.MethodPost {
 			r.ParseForm()

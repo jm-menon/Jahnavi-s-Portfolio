@@ -1,17 +1,17 @@
 package template
 
-import (
-	"fmt"
-	"os"
-)
+import "fmt"
 
-func EmailFormat(from, subject, message string) string {
-	user := os.Getenv("SMTP_USERNAME")
-	return fmt.Sprintf(`From: %s
+func EmailFormat(from, subject, body string) string {
+	return fmt.Sprintf(
+		`From: %s
 To: %s
-Subject: Portfolio Contact: %s
+Subject: %s
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 
-Email: %s
-Message:
-%s`, from, user, subject, from, message)
+Email from: %s
+
+%s
+`, from, "work.jahnavimenon@gmail.com", subject, from, body)
 }
