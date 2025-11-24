@@ -9,7 +9,12 @@ import (
 	"log"
 
 	"github.com/jm-menon/Jahnavi-s-Portfolio/internal/mail/template"
+	"github.com/joho/godotenv"
 )
+
+func init() {
+	godotenv.Load()
+}
 
 //SMTP_HOST= smtp.gmail.com
 //SMTP_PORT= 587
@@ -23,6 +28,8 @@ func SendContact(from, subject, body string) error {
 	pass := os.Getenv("SMTP_PASSWORD")
 	port := os.Getenv("SMTP_PORT")
 	host := os.Getenv("SMTP_HOST")
+
+	log.Println(to, " ,", user, " ,", pass, " ,", port, " ,", host)
 
 	msg := []byte(template.EmailFormat(from, subject, body))
 
