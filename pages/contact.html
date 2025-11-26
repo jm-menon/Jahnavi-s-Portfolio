@@ -36,9 +36,14 @@
 
     const res = await fetch("http://localhost:8080/contact", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        email: document.getElementById("email").value,
+        subject: document.getElementById("subject").value,
+        message: document.getElementById("message").value,
+      }),
     });
+
 
     if (res.ok) {
       alert("Message sent successfully!");
@@ -50,3 +55,5 @@
 </script>
 </body>
 </html>
+
+

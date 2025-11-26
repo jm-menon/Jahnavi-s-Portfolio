@@ -16,12 +16,6 @@ func init() {
 	godotenv.Load()
 }
 
-//SMTP_HOST= smtp.gmail.com
-//SMTP_PORT= 587
-//SMTP_USERNAME= jahnavi.sends@gmail.com
-//SMTP_PASSWORD= xxxxxxx
-//ADMIN_EMAIL= work.jahnavimenon@gmail.com
-
 func SendContact(from, subject, body string) error {
 	to := os.Getenv("ADMIN_EMAIL")
 	user := os.Getenv("SMTP_USERNAME")
