@@ -3,8 +3,13 @@ package template
 import (
 	"fmt"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
+func init() {
+	godotenv.Load()
+}
 func EmailFormat(from, subject, body string) string {
 	return fmt.Sprintf(
 		"From: %s\r\n"+

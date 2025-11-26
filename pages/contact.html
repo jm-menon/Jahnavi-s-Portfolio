@@ -4,10 +4,166 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact</title>
-  <h1>Welcome to my contacts page mfs</h1>
+
+<style>
+  /* --- Global --- */
+  body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(180deg, #031021, #0a2342);
+      color: white;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  }
+
+  /* --- Stars --- */
+  #stars {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+  }
+
+  .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: twinkle 2s infinite;
+  }
+
+  @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+  }
+
+  /* --- Navbar --- */
+  nav {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      padding: 16px 0;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+  }
+
+  nav a {
+      font-family: 'Courier New', monospace;
+      text-decoration: none;
+      color: white;
+      font-size: 1.2rem;
+      padding: 8px 16px;
+      border-radius: 10px;
+      transition: 0.3s ease;
+  }
+
+  nav a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: scale(1.05);
+  }
+
+  /* --- Heading --- */
+  h1 {
+      margin-top: 90px;
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+  }
+
+  /* --- Contact Form Card --- */
+  form {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 450px;
+
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 18px rgba(39, 228, 245, 0.2);
+      border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #d8f7ff;
+      font-size: 1rem;
+  }
+
+  input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 18px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s ease;
+  }
+
+  input:focus, textarea:focus {
+      background: rgba(255,255,255,0.25);
+      box-shadow: 0 0 8px #27E4F5;
+  }
+
+  textarea {
+      resize: vertical;
+      min-height: 120px;
+  }
+
+  button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #27E4F5;
+      color: #031021;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: 0 0 10px rgba(39, 228, 245, 0.4);
+  }
+
+  button:hover {
+      transform: scale(1.03);
+      background: #5ff1ff;
+  }
+</style>
 </head>
+
 <body>
-  <form id="contactForm">
+
+<div id="stars"></div>
+
+<!-- --- NAVBAR --- -->
+<nav>
+    <a href="index">About Me</a>
+    <a href="projects">Fun Projects</a>
+    <a href="contact">Contact Me</a>
+    <a href="resume">My Resume</a>
+</nav>
+
+<!-- --- HEADING --- -->
+<h1>Welcome to my contacts page mfs</h1>
+
+<!-- --- FORM --- -->
+<form id="contactForm">
   <label for="name">Name</label>
   <input type="text" id="name" name="name" required />
 
@@ -24,17 +180,22 @@
 </form>
 
 <script>
-  document.getElementById("contactForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
+/* ---------- Generate Stars ---------- */
+const starsContainer = document.getElementById("stars");
+for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.animationDelay = (Math.random() * 2) + "s";
+    starsContainer.appendChild(star);
+}
 
-    const formData = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
-      subject: document.getElementById("subject").value,
-      message: document.getElementById("message").value,
-    };
+/* ---------- Submit Contact Form ---------- */
+document.getElementById("contactForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-    const res = await fetch("http://localhost:8080/contact", {
+  const res = await fetch("/contact", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
@@ -42,18 +203,16 @@
         subject: document.getElementById("subject").value,
         message: document.getElementById("message").value,
       }),
-    });
+  });
 
-
-    if (res.ok) {
+  if (res.ok) {
       alert("Message sent successfully!");
       e.target.reset();
-    } else {
+  } else {
       alert("Failed to send message. Please try again.");
-    }
-  });
+  }
+});
 </script>
+
 </body>
 </html>
-
-

@@ -1,10 +1,178 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>About</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Me</title>
+
+<style>
+    /* --- Global Layout --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(180deg, #031021, #0a2342);
+        color: white;
+    }
+
+    /* --- Stars Layer --- */
+    #stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0;
+        animation: twinkle 2s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+
+    /* --- Navigation Bar --- */
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 16px 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    nav a {
+        font-family: 'Courier New', monospace;
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: 0.3s ease;
+    }
+
+    nav a:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.05);
+    }
+
+    /* --- Glass Content Card --- */
+    .content-card {
+        max-width: 850px;
+        margin: 60px auto;
+        padding: 35px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 22px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        color: #e6f3ff;
+        line-height: 1.7;
+    }
+
+    .content-card h1 {
+        font-size: 2.5rem;
+        margin-bottom: 18px;
+        border-left: 6px solid #27E4F5;
+        padding-left: 12px;
+    }
+
+    .content-card h2 {
+        font-size: 1.8rem;
+        margin-top: 35px;
+        border-left: 5px solid #27E4F5;
+        padding-left: 10px;
+        opacity: 0.9;
+    }
+
+    .content-card p {
+        margin-top: 12px;
+        text-align: left;
+        color: #d7eaff;
+    }
+
+    /* --- Footer --- */
+    footer {
+        text-align: center;
+        padding: 14px 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-size: 0.9rem;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+        margin-top: 40px;
+    }
+
+    footer span {
+        color: #27E4F5;
+    }
+</style>
 </head>
+
 <body>
-<h2>About Me</h2>
-<p> Lorem ipsum sha ta ta ta la la</p>
+
+<div id="stars"></div>
+
+<nav>
+    <a href="index">About Me</a>
+    <a href="projects">Fun Projects</a>
+    <a href="contact">Contact Me</a>
+    <a href="resume">My Resume</a>
+</nav>
+
+<div class="content-card">
+    <h1>About Me</h1>
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+        et dolore magna aliqua...
+    </p>
+
+    <h2>More About My Journey</h2>
+    <p>
+        Mauris sit amet massa vitae tortor condimentum lacinia quis vel. Et netus et malesuada fames ac turpis
+        egestas maecenas...
+    </p>
+
+    <h2>What Inspires Me</h2>
+    <p>
+        Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Sit amet consectetur adipiscing elit...
+    </p>
+
+    <h2>More Random Cat Wisdom</h2>
+    <p>
+        Lorem mollis aliquam ut porttitor leo a diam sollicitudin tempor. Sed adipiscing diam donec adipiscing
+        tristique risus nec feugiat...
+    </p>
+</div>
+
+<footer>
+    Made with Go + HTML <span>💙</span>
+</footer>
+
+<script>
+    const starsContainer = document.getElementById("stars");
+    const starCount = 100;
+
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDelay = Math.random() * 2 + "s";
+        starsContainer.appendChild(star);
+    }
+</script>
+
 </body>
 </html>

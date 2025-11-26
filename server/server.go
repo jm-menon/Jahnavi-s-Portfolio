@@ -15,7 +15,7 @@ func NewServer() http.Handler {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("server")))) //ask an explanation
+	//mux.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("server")))) //ask an explanation
 
 	tmpl := template.Must(template.ParseGlob("pages/*.html")) //ask for a detailed explanation
 

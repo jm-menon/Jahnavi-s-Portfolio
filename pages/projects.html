@@ -4,14 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects</title>
-    <h1>My projects</h1>
+
+    <style>
+        body {
+    margin: 0;
+    padding: 0;
+    padding-bottom: 80px;   /* ← ensures content never hides behind footer */
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(180deg, #031021, #0a2342);
+    color: white;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+        /* --- Top Navigation Bar --- */
+        nav.topbar {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            padding: 16px 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+        }
+
+        nav.topbar a {
+            font-family: 'Courier New', monospace;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: 0.3s ease;
+        }
+
+        nav.topbar a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: scale(1.05);
+        }
+
+        /* --- Starfield --- */
+        #stars {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: white;
+            opacity: 0;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* --- Main Content (Left aligned) --- */
+        .container {
+    max-width: 900px;
+    margin: 140px auto 100px;   /* top, sides, bottom */
+    padding: 20px 40px;
+    min-height: calc(100vh - 240px);  /* makes sure content fills screen */
+    padding-bottom: 100px;   /* gives breathing room above fixed footer */
+}
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        }
+
+        p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 20px 0 5px;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        a {
+            color: #7fdcff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+
+        .desc {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 14px 0;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            color: white;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer span {
+            color: #27E4F5;
+        }
+    </style>
 </head>
-<body> 
+
+<body>
+
+<div id="stars"></div>
+
+<script>
+    const starsContainer = document.getElementById("stars");
+
+    const starCount = 100;
+    const stars = [];
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDelay = (Math.random() * 2) + "s";
+        starsContainer.appendChild(star);
+        stars.push(star);
+    }
+</script>
+
+<nav class="topbar">
+    <a href="about">About Me</a>
+    <a href="projects">Fun Projects</a>
+    <a href="contact">Contact Me</a>
+    <a href="resume">My Resume</a>
+</nav>
+
+<div class="container">
+    <h1>My Projects</h1>
     <p>Here are some of the projects I have worked on recently:</p>
-    <ul>    
-        <li> <a href="https://github.com/jm-menon/Contacts-App">Contact Manager App</a></li>
-        <li><a href="https://github.com/jm-menon/ML-Based-Antivirus">ML Antivirus</a> </li>
+
+    <ul>
+        <li><a href="https://github.com/jm-menon/Contacts-App">Contact Manager App</a></li>
+        <div class="desc">Something something</div>
+
+        <li><a href="https://github.com/jm-menon/ML-Based-Antivirus">ML Antivirus</a></li>
+        <div class="desc">Something something</div>
+
         <li><a href="https://github.com/jm-menon/QKD-Blockchain-Security-System">QKD</a></li>
+        <div class="desc">Something something</div>
     </ul>
+</div>
+
+<footer>
+    Made with Go + HTML <span>❤️</span>
+</footer>
+
 </body>
 </html>

@@ -1,17 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jahnavi</title>
-    <h1>Hi I am Jahnavi!!</h1>
-    <h3>Backend Engineer</h3>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jahnavi</title>
+
+<style>
+    /* --- Global Layout --- */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: "Inter", sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(180deg, #031021, #0a2342);
+        color: white;
+    }
+
+    /* --- Top Navigation Bar --- */
+    nav.topbar {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 16px 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    nav.topbar a {
+        font-family: 'Courier New', monospace;
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        font-weight: 60;
+    }
+
+    nav.topbar a:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.05);
+    }
+
+    /* --- Main Content --- */
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.8rem;
+        opacity: 0.9;
+    }
+
+    .tagline {
+        font-family: 'Courier New', monospace;
+        font-size: 1.2rem;
+        color: rgba(255,255,255,0.85);
+        margin-top: 6px;
+        margin-bottom: 30px;
+        letter-spacing: 0.8px;
+    }
+
+    /* --- Footer --- */
+    footer {
+        text-align: center;
+        padding: 14px 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        color: white;
+        font-size: 0.9rem;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+    }
+
+    footer span {
+        color: #27E4F5;
+    }
+
+    /* --- Stars Layer --- */
+    #stars {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: transparent;
+    }
+
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        border-radius: 50%;
+        background: white;
+        opacity: 0;
+        animation: twinkle 2s infinite;
+    }
+
+    @keyframes twinkle {
+        0%, 100% { opacity: 0; }
+        50% { opacity: 1; }
+    }
+</style>
 </head>
+
 <body>
+<div id="stars"></div>
+
+<nav class="topbar">
     <a href="about">About Me</a>
-    <a href="blogs">Blogs</a>
     <a href="projects">Fun Projects</a>
-    <a href="contact">Contact Meeee</a>
+    <a href="contact">Contact Me</a>
+    <!--<a href="blogs">Blogs</a>-->
     <a href="resume">My Resume</a>
+</nav>
+
+<div class="content">
+    <h1>Hi, I am Jahnavi!!</h1>
+    <h3>Backend Engineer</h3>
+    <p class="tagline">i love coding day and night</p>
+</div>
+
+<footer>
+    Made with Go + HTML <span>❤️</span>
+</footer>
+
+<script>
+    const starsContainer = document.getElementById("stars");
+
+    // Create 100 random stars
+    const starCount = 100;
+    const stars = [];
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDelay = (Math.random() * 2) + "s";
+        starsContainer.appendChild(star);
+        stars.push(star);
+    }
+
+    document.addEventListener("mousemove", (e) => {
+        let ratio = e.clientX / window.innerWidth;
+        if (ratio > 1) ratio = 1;
+
+        // Stars opacity: visible on left, fade on right
+        stars.forEach(star => {
+            star.style.opacity = (1 - ratio) * Math.random();
+        });
+    });
+</script>
+
 </body>
 </html>
