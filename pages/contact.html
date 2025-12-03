@@ -1,218 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact</title>
 
-<style>
-  /* --- Global --- */
-  body {
-      margin: 0;
-      padding: 0;
-      font-family: "Inter", sans-serif;
-      background: linear-gradient(180deg, #031021, #0a2342);
-      color: white;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+  <style>
+    /* --- Global --- */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(180deg, #031021, #0a2342);
+        color: white;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; REMOVED TO MATCH ABOUT PAGE LAYOUT */
+        min-height: 100vh;
+    }
 
-  /* --- Stars --- */
-  #stars {
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-  }
+    /* --- Stars --- */
+    #stars {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
+    .star {
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        border-radius: 50%;
+        opacity: 0.3;
+        animation: twinkle 2s infinite;
+    }
+    @keyframes twinkle {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 1; }
+    }
 
-  .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.3;
-      animation: twinkle 2s infinite;
-  }
+    /* --- Navbar --- */
+    nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 16px 0;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    nav a {
+        font-family: 'Courier New', monospace;
+        text-decoration: none;
+        color: white;
+        font-size: 1.2rem;
+        padding: 8px 16px;
+        border-radius: 10px;
+        transition: 0.3s ease;
+    }
+    nav a:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.05);
+    }
 
-  @keyframes twinkle {
-      0%, 100% { opacity: 0.2; }
-      50% { opacity: 1; }
-  }
+    /* --- Content Card (copied/adapted from About page) --- */
+    .content-card {
+        max-width: 850px;
+        margin: 60px auto;
+        padding: 35px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 22px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        color: #e6f3ff;
+        line-height: 1.7;
+        flex: 1 0 auto; /* Allows card to grow and fill space, pushing footer down */
+    }
 
-  /* --- Navbar --- */
-  nav {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      padding: 16px 0;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-  }
+    /* --- Heading (adjusted for content card) --- */
+    h1 {
+        margin-top: 0; /* Removed 90px to fit within content card */
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        margin-bottom: 30px; /* Added spacing before form */
+    }
 
-  nav a {
-      font-family: 'Courier New', monospace;
-      text-decoration: none;
-      color: white;
-      font-size: 1.2rem;
-      padding: 8px 16px;
-      border-radius: 10px;
-      transition: 0.3s ease;
-  }
+    /* --- Contact Form (removed card styles since now inside content-card) --- */
+    form {
+        margin-top: 0; /* Removed original margin */
+        margin-bottom: 0; /* Removed added margin */
+        width: 90%;
+        max-width: 450px;
+        margin-left: auto; /* Center form within content card */
+        margin-right: auto;
+        /* Removed: background, backdrop-filter, padding, border-radius, box-shadow, border */
+    }
+    label { display: block; margin-bottom: 6px; font-weight: 600; color: #d8f7ff; font-size: 1rem; }
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 18px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.15);
+        color: white;
+        font-size: 1rem;
+        outline: none;
+        transition: 0.2s ease;
+    }
+    input:focus, textarea:focus {
+        background: rgba(255,255,255,0.25);
+        box-shadow: 0 0 8px #27E4F5;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: #27E4F5;
+        color: #031021;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.25s ease;
+        box-shadow: 0 0 10px rgba(39, 228, 245, 0.4);
+    }
+    button:hover {
+        transform: scale(1.03);
+        background: #5ff1ff;
+    }
 
-  nav a:hover {
-      background: rgba(255,255,255,0.2);
-      transform: scale(1.05);
-  }
+    /* --- Footer (matched to About page) --- */
+    footer {
+        text-align: center;
+        padding: 14px 0;
+        background: rgba(255,255,255,0.1);  /* ✅ MATCHED ABOUT PAGE */
+        backdrop-filter: blur(8px);
+        color: white;
+        font-size: 0.9rem;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+        margin-top: 20px; /* ✅ MATCHED ABOUT PAGE — removed auto */
+        width: 100%;
+    }
 
-  /* --- Heading --- */
-  h1 {
-      margin-top: 90px;
-      text-align: center;
-      font-size: 2.5rem;
-      font-weight: 700;
-      text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-  }
-
-  /* --- Contact Form Card --- */
-  form {
-      margin-top: 30px;
-      width: 90%;
-      max-width: 450px;
-
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(12px);
-      padding: 35px 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 18px rgba(39, 228, 245, 0.2);
-      border: 1px solid rgba(255,255,255,0.12);
-  }
-
-  label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #d8f7ff;
-      font-size: 1rem;
-  }
-
-  input, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 18px;
-      border: none;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      font-size: 1rem;
-      outline: none;
-      transition: 0.2s ease;
-  }
-
-  input:focus, textarea:focus {
-      background: rgba(255,255,255,0.25);
-      box-shadow: 0 0 8px #27E4F5;
-  }
-
-  textarea {
-      resize: vertical;
-      min-height: 120px;
-  }
-
-  button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      background: #27E4F5;
-      color: #031021;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: 0.25s ease;
-      box-shadow: 0 0 10px rgba(39, 228, 245, 0.4);
-  }
-
-  button:hover {
-      transform: scale(1.03);
-      background: #5ff1ff;
-  }
-</style>
+    .social-icons {
+        margin-top: 16px;
+        display: flex;
+        justify-content: center;
+        gap: 28px;
+        flex-wrap: wrap;
+    }
+    .social-icons a {
+        color: #f5f9fb;
+        transition: all 0.3s ease;
+        padding: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.05);
+    }
+    .social-icons a:hover {
+        color: #ffffff;
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-4px) scale(1.1);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
-
 <body>
 
-<div id="stars"></div>
+  <div id="stars"></div>
 
-<!-- --- NAVBAR --- -->
-<nav>
-    <a href="/">Home</a>
-    <a href="about">About Me</a>
-    <a href="projects">Fun Projects</a>
-    <a href="contact">Contact Me</a>
-    <a href="resume">My Resume</a>
-</nav>
+  <!-- NAVBAR -->
+  <nav>
+      <a href="/">Home</a>
+      <a href="about">About Me</a>
+      <a href="projects">Fun Projects</a>
+      <a href="contact">Contact Me</a>
+      <a href="resume">My Resume</a>
+  </nav>
 
-<!-- --- HEADING --- -->
-<h1>Welcome to my contacts page mfs</h1>
+  <!-- CONTENT CARD WRAPPER -->
+  <div class="content-card">
+    <!-- HEADING -->
+    <h1>Send me an Email!</h1>
 
-<!-- --- FORM --- -->
-<form id="contactForm">
-  <label for="name">Name</label>
-  <input type="text" id="name" name="name" required />
+    <!-- FORM -->
+    <form id="contactForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required />
 
-  <label for="email">Email</label>
-  <input type="email" id="email" name="email" required />
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
 
-  <label for="subject">Subject</label>
-  <input type="text" id="subject" name="subject" required />
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" required />
 
-  <label for="message">Message</label>
-  <textarea id="message" name="message" required></textarea>
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
 
-  <button type="submit">Send Message</button>
-</form>
-<script>
-/* ---------- Generate Stars ---------- */
-const starsContainer = document.getElementById("stars");
-for (let i = 0; i < 100; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    star.style.top = Math.random() * 100 + "%";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.animationDelay = (Math.random() * 2) + "s";
-    starsContainer.appendChild(star);
-}
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
 
-/* ---------- Submit Contact Form ---------- */
-document.getElementById("contactForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+  <!-- Stars + Form Script -->
+  <script>
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+        const star = document.createElement("div");
+        star.className = "star";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.animationDelay = (Math.random() * 2) + "s";
+        starsContainer.appendChild(star);
+    }
 
-  const res = await fetch("/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        email: document.getElementById("email").value,
-        subject: document.getElementById("subject").value,
-        message: document.getElementById("message").value,
-      }),
-  });
-
-  if (res.ok) {
-      alert("Message sent successfully!");
-      e.target.reset();
-  } else {
-      alert("Failed to send message. Please try again.");
-  }
-});
-</script>
-
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const res = await fetch("/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams({
+            email: document.getElementById("email").value,
+            subject: document.getElementById("subject").value,
+            message: document.getElementById("message").value,
+          }),
+      });
+      if (res.ok) {
+          alert("Message sent successfully!");
+          e.target.reset();
+      } else {
+          alert("Failed to send message. Please try again.");
+      }
+    });
+  </script>
 </body>
 </html>
