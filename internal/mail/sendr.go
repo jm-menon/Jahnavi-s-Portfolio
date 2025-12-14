@@ -88,19 +88,29 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
+	"log"
 	"os"
+	"strings"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	gmail "google.golang.org/api/gmail/v1"
+	"google.golang.org/api/gmail/v1"
+	"google.golang.org/api/option"
 )
 
 func SendContact(from, subject, body string) error {
+	ctx := context.Background()
+
 	clientID := os.Getenv("GMAIL_CLIENT_ID")
 	clientSecret := os.Getenv("GMAIL_CLIENT_SECRET")
 	refreshToken := os.Getenv("GMAIL_REFRESH_TOKEN")
 	admin := os.Getenv("ADMIN_EMAIL")
 
+	if clientID == "" || clientSecret == "" || refreshToken == "" {
+		return fmt.Errorf("missing gmail oauth environment variables")
+	}
+
+	// OAuth2 config
 	conf := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
@@ -108,24 +118,39 @@ func SendContact(from, subject, body string) error {
 		Endpoint:     google.Endpoint,
 	}
 
-	token := &oauth2.Token{RefreshToken: refreshToken}
-	client := conf.Client(context.Background(), token)
-
-	srv, err := gmail.New(client)
-	if err != nil {
-		return fmt.Errorf("gmail service error: %w", err)
+	// Token source (auto-refreshes access token)
+	token := &oauth2.Token{
+		RefreshToken: refreshToken,
 	}
 
-	msg := []byte(
-		"From: " + from + "\r\n" +
-			"To: " + admin + "\r\n" +
-			"Subject: " + subject + "\r\n\r\n" +
-			body,
-	)
+	client := conf.Client(ctx, token)
 
-	var gmailMsg gmail.Message
-	gmailMsg.Raw = base64.URLEncoding.EncodeToString(msg)
+	// ✅ NEW, CORRECT INITIALIZATION
+	srv, err := gmail.NewService(ctx, option.WithHTTPClient(client))
+	if err != nil {
+		return fmt.Errorf("unable to create gmail service: %w", err)
+	}
+	log.Println("Gmail service created successfully")
+	// Build RFC 2822 email
+	rawMessage := strings.Join([]string{
+		"From: " + from,
+		"To: " + admin,
+		"Subject: " + subject,
+		"MIME-Version: 1.0",
+		"Content-Type: text/plain; charset=\"UTF-8\"",
+		"",
+		body,
+	}, "\r\n")
 
-	_, err = srv.Users.Messages.Send("me", &gmailMsg).Do()
-	return err
+	message := &gmail.Message{
+		Raw: base64.URLEncoding.EncodeToString([]byte(rawMessage)),
+	}
+	log.Println("Email message constructed successfully")
+	// Send mail
+	_, err = srv.Users.Messages.Send("me", message).Do()
+	if err != nil {
+		return fmt.Errorf("gmail send failed: %w", err)
+	}
+	log.Println("Email sent successfully via Gmail API")
+	return nil
 }
