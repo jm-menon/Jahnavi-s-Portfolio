@@ -93,7 +93,6 @@ import (
 	"strings"
 
 	"golang.org/x/oauth2"
-	"golang.org/x/oauth2/google"
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/option"
 )
@@ -113,11 +112,17 @@ func SendContact(userEmail, subject, body string) error {
 	conf := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
-		Scopes:       []string{gmail.GmailSendScope},
-		Endpoint:     google.Endpoint,
+		Scopes:       []string{"https://www.googleapis.com/auth/gmail.send"},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  "https://accounts.google.com/o/oauth2/v2/auth",
+			TokenURL: "https://oauth2.googleapis.com/token",
+		},
 	}
 
-	token := &oauth2.Token{RefreshToken: refreshToken}
+	token := &oauth2.Token{
+		RefreshToken: refreshToken,
+	}
+
 	client := conf.Client(ctx, token)
 
 	srv, err := gmail.NewService(ctx, option.WithHTTPClient(client))
@@ -125,7 +130,6 @@ func SendContact(userEmail, subject, body string) error {
 		return fmt.Errorf("gmail service error: %w", err)
 	}
 
-	// 🔒 Send ONLY to yourself
 	rawMessage := strings.Join([]string{
 		"From: " + admin,
 		"To: " + admin,
@@ -140,17 +144,16 @@ func SendContact(userEmail, subject, body string) error {
 		"Message:",
 		body,
 	}, "\r\n")
-	log.Println("Raw Message:\n", rawMessage)
-	message := &gmail.Message{
+
+	msg := &gmail.Message{
 		Raw: base64.RawURLEncoding.EncodeToString([]byte(rawMessage)),
 	}
-	log.Println("Encoded Message:\n", message.Raw)
-	resp, err := srv.Users.Messages.Send("me", message).Do()
-	log.Println("Gmail API Response:", resp, "Error:", err)
+
+	resp, err := srv.Users.Messages.Send("me", msg).Do()
 	if err != nil {
 		return fmt.Errorf("gmail send failed: %w", err)
 	}
 
-	log.Println("Contact email delivered, message ID:", resp.Id)
+	log.Println("Email sent successfully, message ID:", resp.Id)
 	return nil
 }
