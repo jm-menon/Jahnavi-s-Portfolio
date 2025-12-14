@@ -140,12 +140,13 @@ func SendContact(userEmail, subject, body string) error {
 		"Message:",
 		body,
 	}, "\r\n")
-
+	log.Println("Raw Message:\n", rawMessage)
 	message := &gmail.Message{
 		Raw: base64.RawURLEncoding.EncodeToString([]byte(rawMessage)),
 	}
-
+	log.Println("Encoded Message:\n", message.Raw)
 	resp, err := srv.Users.Messages.Send("me", message).Do()
+	log.Println("Gmail API Response:", resp, "Error:", err)
 	if err != nil {
 		return fmt.Errorf("gmail send failed: %w", err)
 	}
