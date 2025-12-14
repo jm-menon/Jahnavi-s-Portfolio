@@ -1,4 +1,5 @@
-package mail
+//replacing the old smtip code with the more practical oauth solution, as render blocks port 587
+/*package mail
 
 import (
 	"net/smtp"
@@ -79,4 +80,52 @@ func SendContact(from, subject, body string) error {
 	}
 
 	return conn.Quit()
+}*/
+
+package mail
+
+import (
+	"context"
+	"encoding/base64"
+	"fmt"
+	"os"
+
+	"golang.org/x/oauth2"
+	"golang.org/x/oauth2/google"
+	gmail "google.golang.org/api/gmail/v1"
+)
+
+func SendContact(from, subject, body string) error {
+	clientID := os.Getenv("GMAIL_CLIENT_ID")
+	clientSecret := os.Getenv("GMAIL_CLIENT_SECRET")
+	refreshToken := os.Getenv("GMAIL_REFRESH_TOKEN")
+	admin := os.Getenv("ADMIN_EMAIL")
+
+	conf := &oauth2.Config{
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+		Scopes:       []string{gmail.GmailSendScope},
+		Endpoint:     google.Endpoint,
+	}
+
+	token := &oauth2.Token{RefreshToken: refreshToken}
+	client := conf.Client(context.Background(), token)
+
+	srv, err := gmail.New(client)
+	if err != nil {
+		return fmt.Errorf("gmail service error: %w", err)
+	}
+
+	msg := []byte(
+		"From: " + from + "\r\n" +
+			"To: " + admin + "\r\n" +
+			"Subject: " + subject + "\r\n\r\n" +
+			body,
+	)
+
+	var gmailMsg gmail.Message
+	gmailMsg.Raw = base64.URLEncoding.EncodeToString(msg)
+
+	_, err = srv.Users.Messages.Send("me", &gmailMsg).Do()
+	return err
 }
