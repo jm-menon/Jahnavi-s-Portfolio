@@ -98,7 +98,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-func SendContact(from, subject, body string) error {
+func SendContact(userEmail, subject, body string) error {
 	ctx := context.Background()
 
 	clientID := os.Getenv("GMAIL_CLIENT_ID")
@@ -106,11 +106,10 @@ func SendContact(from, subject, body string) error {
 	refreshToken := os.Getenv("GMAIL_REFRESH_TOKEN")
 	admin := os.Getenv("ADMIN_EMAIL")
 
-	if clientID == "" || clientSecret == "" || refreshToken == "" {
+	if clientID == "" || clientSecret == "" || refreshToken == "" || admin == "" {
 		return fmt.Errorf("missing gmail oauth environment variables")
 	}
 
-	// OAuth2 config
 	conf := &oauth2.Config{
 		ClientID:     clientID,
 		ClientSecret: clientSecret,
@@ -118,39 +117,39 @@ func SendContact(from, subject, body string) error {
 		Endpoint:     google.Endpoint,
 	}
 
-	// Token source (auto-refreshes access token)
-	token := &oauth2.Token{
-		RefreshToken: refreshToken,
-	}
-
+	token := &oauth2.Token{RefreshToken: refreshToken}
 	client := conf.Client(ctx, token)
 
-	// ✅ NEW, CORRECT INITIALIZATION
 	srv, err := gmail.NewService(ctx, option.WithHTTPClient(client))
 	if err != nil {
-		return fmt.Errorf("unable to create gmail service: %w", err)
+		return fmt.Errorf("gmail service error: %w", err)
 	}
-	log.Println("Gmail service created successfully")
-	// Build RFC 2822 email
+
+	// 🔒 Send ONLY to yourself
 	rawMessage := strings.Join([]string{
-		"From: " + from,
+		"From: " + admin,
 		"To: " + admin,
 		"Subject: " + subject,
 		"MIME-Version: 1.0",
 		"Content-Type: text/plain; charset=\"UTF-8\"",
 		"",
+		"New contact form submission",
+		"",
+		"User email: " + userEmail,
+		"",
+		"Message:",
 		body,
 	}, "\r\n")
 
 	message := &gmail.Message{
-		Raw: base64.URLEncoding.EncodeToString([]byte(rawMessage)),
+		Raw: base64.RawURLEncoding.EncodeToString([]byte(rawMessage)),
 	}
-	log.Println("Email message constructed successfully")
-	// Send mail
-	_, err = srv.Users.Messages.Send("me", message).Do()
+
+	resp, err := srv.Users.Messages.Send("me", message).Do()
 	if err != nil {
 		return fmt.Errorf("gmail send failed: %w", err)
 	}
-	log.Println("Email sent successfully via Gmail API")
+
+	log.Println("Contact email delivered, message ID:", resp.Id)
 	return nil
 }
