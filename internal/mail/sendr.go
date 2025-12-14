@@ -148,7 +148,8 @@ func SendContact(userEmail, subject, body string) error {
 	msg := &gmail.Message{
 		Raw: base64.RawURLEncoding.EncodeToString([]byte(rawMessage)),
 	}
-
+	log.Println(rawMessage)
+	log.Println(msg)
 	resp, err := srv.Users.Messages.Send("me", msg).Do()
 	if err != nil {
 		return fmt.Errorf("gmail send failed: %w", err)
