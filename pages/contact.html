@@ -7,174 +7,220 @@
 
   <style>
     /* --- Global --- */
-    html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-    }
-    body {
-        font-family: "Inter", sans-serif;
-        background: linear-gradient(180deg, #031021, #0a2342);
-        color: white;
-        display: flex;
-        flex-direction: column;
-        /* align-items: center; REMOVED TO MATCH ABOUT PAGE LAYOUT */
-        min-height: 100vh;
-    }
+    /* --- Global --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-    /* --- Stars --- */
-    #stars {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-    }
-    .star {
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        background: white;
-        border-radius: 50%;
-        opacity: 0.3;
-        animation: twinkle 2s infinite;
-    }
-    @keyframes twinkle {
-        0%, 100% { opacity: 0.2; }
-        50% { opacity: 1; }
-    }
+body {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(180deg, #031021, #0a2342);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-    /* --- Navbar --- */
-    nav {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        gap: 25px;
-        padding: 16px 0;
-        background: rgba(255,255,255,0.1);
-        backdrop-filter: blur(8px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
+/* --- Stars --- */
+#stars {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: twinkle 2s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+}
+
+/* --- Navbar --- */
+nav {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;            /* ✅ mobile wrap */
+    gap: 16px;
+    padding: 14px 12px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav a {
+    font-family: 'Courier New', monospace;
+    text-decoration: none;
+    color: white;
+    font-size: 1.05rem;
+    padding: 6px 14px;
+    border-radius: 10px;
+    transition: 0.3s ease;
+}
+
+nav a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+
+/* --- Content Card --- */
+.content-card {
+    max-width: 850px;
+    margin: 32px auto;
+    padding: 32px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    color: #e6f3ff;
+    line-height: 1.7;
+    flex: 1 0 auto;
+}
+
+/* --- Heading --- */
+h1 {
+    margin: 0 0 26px;
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 700;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+}
+
+/* --- Contact Form --- */
+form {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #d8f7ff;
+    font-size: 1rem;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+input:focus, textarea:focus {
+    background: rgba(255,255,255,0.25);
+    box-shadow: 0 0 8px #27E4F5;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: #27E4F5;
+    color: #031021;
+    font-weight: 700;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 0 10px rgba(39, 228, 245, 0.4);
+}
+
+button:hover {
+    transform: scale(1.03);
+    background: #5ff1ff;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 14px 10px;
+    background: #283852;
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 0.9rem;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
+    width: 100%;
+}
+
+.social-icons {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+
+.social-icons a {
+    color: #f5f9fb;
+    transition: all 0.3s ease;
+    padding: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+
+.social-icons a:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-3px) scale(1.08);
+}
+
+/* ========================= */
+/* 📱 Mobile Optimizations */
+/* ========================= */
+@media (max-width: 768px) {
+
     nav a {
-        font-family: 'Courier New', monospace;
-        text-decoration: none;
-        color: white;
-        font-size: 1.2rem;
-        padding: 8px 16px;
-        border-radius: 10px;
-        transition: 0.3s ease;
-    }
-    nav a:hover {
-        background: rgba(255,255,255,0.2);
-        transform: scale(1.05);
+        font-size: 0.95rem;
+        padding: 6px 12px;
     }
 
-    /* --- Content Card (copied/adapted from About page) --- */
     .content-card {
-        max-width: 850px;
-        margin: 20px auto;
-        padding: 35px;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(10px);
-        border-radius: 22px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        color: #e6f3ff;
-        line-height: 1.7;
-        flex: 1 0 auto; /* Allows card to grow and fill space, pushing footer down */
+        margin: 22px 14px;
+        padding: 22px;
     }
 
-    /* --- Heading (adjusted for content card) --- */
     h1 {
-        margin-top: 0; /* Removed 90px to fit within content card */
-        text-align: center;
-        font-size: 2.5rem;
-        font-weight: 700;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-        margin-bottom: 30px; /* Added spacing before form */
+        font-size: 1.8rem;
     }
 
-    /* --- Contact Form (removed card styles since now inside content-card) --- */
-    form {
-        /* margin-top: 0; /* Removed original margin */
-        /* margin-bottom: 0; Removed added margin */ 
-        width: 90%;
-        max-width: 450px;
-        margin: 10px;
-        /* margin-left: auto; /* Center form within content card */
-        /* margin-right: auto; */ 
-        /* Removed: background, backdrop-filter, padding, border-radius, box-shadow, border */
+    label {
+        font-size: 0.95rem;
     }
-    label { display: block; margin-bottom: 6px; font-weight: 600; color: #d8f7ff; font-size: 1rem; }
+
     input, textarea {
-        width: 100%;
-        padding: 12px;
-        margin-bottom: 18px;
-        border: none;
-        border-radius: 8px;
-        background: rgba(255,255,255,0.15);
-        color: white;
-        font-size: 1rem;
-        outline: none;
-        transition: 0.2s ease;
+        font-size: 0.95rem;
     }
-    input:focus, textarea:focus {
-        background: rgba(255,255,255,0.25);
-        box-shadow: 0 0 8px #27E4F5;
-    }
-    textarea { resize: vertical; min-height: 120px; }
+
     button {
-        width: 100%;
-        padding: 14px;
-        border: none;
-        border-radius: 10px;
-        background: #27E4F5;
-        color: #031021;
-        font-weight: 700;
-        font-size: 1.1rem;
-        cursor: pointer;
-        transition: 0.25s ease;
-        box-shadow: 0 0 10px rgba(39, 228, 245, 0.4);
+        font-size: 1rem;
     }
-    button:hover {
-        transform: scale(1.03);
-        background: #5ff1ff;
-    }
+}
 
-    /* --- Footer (matched to About page) --- */
-    footer {
-        text-align: center;
-        padding: 14px 0;
-        background: #283852;  /* ✅ MATCHED ABOUT PAGE */
-        backdrop-filter: blur(8px);
-        color: white;
-        font-size: 0.9rem;
-        box-shadow: 0 -4px 12px rgba(0,0,0,0.2);
-        margin-top: 20px; /* ✅ MATCHED ABOUT PAGE — removed auto */
-        width: 100%;
-    }
-
-    .social-icons {
-        margin-top: 16px;
-        display: flex;
-        justify-content: center;
-        gap: 28px;
-        flex-wrap: wrap;
-    }
-    .social-icons a {
-        color: #f5f9fb;
-        transition: all 0.3s ease;
-        padding: 8px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.05);
-    }
-    .social-icons a:hover {
-        color: #ffffff;
-        background: rgba(255,255,255,0.2);
-        transform: translateY(-4px) scale(1.1);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
   </style>
 </head>
 <body>
