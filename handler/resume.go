@@ -18,6 +18,7 @@ func PDF(filePath string) http.HandlerFunc {
 		defer file.Close()
 
 		w.Header().Set("Content-Type", "application/pdf")
+		w.Header().Set("Content-Disposition", "inline; filename=\"resume.pdf\"")
 
 		http.ServeContent(w, r, filePath, fileStat(file), file)
 	}
